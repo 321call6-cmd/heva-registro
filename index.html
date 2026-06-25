@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>heva · Registro para Médicos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* ── heva Brand Tokens ───────────────────────────── */
+    :root {
+      --blue:       #0056D6;   /* Vital Blue */
+      --lime:       #C3FB11;   /* Vibrant Lime */
+      --deep:       #01327B;   /* Deep Trust */
+      --horizon:    #3D96FE;   /* Horizon Light Blue */
+      --pastel:     #9ECBFF;   /* Pastel Care */
+      --soft-grey:  #E9EBF2;   /* Soft Grey */
+      --black:      #151C22;
+      --white:      #FFFFFF;
+      --radius:     16px;
+      --radius-sm:  10px;
+      --font:       'Nunito', sans-serif;
+    }
+
+    /* ── Reset ───────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font);
+      background: var(--soft-grey);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 0 60px;
+      color: var(--black);
+    }
+
+    /* ── Header ──────────────────────────────────────── */
+    header {
+      width: 100%;
+      background: var(--blue);
+      display: flex;
+      justify-content: center;
+      padding: 28px 24px 24px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .logo-icon {
+      width: 52px;
+      height: 52px;
+      background: var(--blue);
+      border-radius: 14px;
+      border: 2px solid rgba(255,255,255,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .logo-icon svg { width: 32px; height: 32px; }
+    .logo-text {
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -1px;
+    }
+
+    /* ── Hero Banner ─────────────────────────────────── */
+    .hero {
+      width: 100%;
+      background: linear-gradient(135deg, var(--deep) 0%, var(--blue) 100%);
+      padding: 40px 24px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 220px; height: 220px;
+      border-radius: 50%;
+      background: rgba(195,251,17,0.08);
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: -40px;
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      background: rgba(61,150,254,0.12);
+    }
+    .gift-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--lime);
+      color: var(--deep);
+      font-weight: 800;
+      font-size: 14px;
+      padding: 8px 18px;
+      border-radius: 50px;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+      letter-spacing: 0.3px;
+    }
+    .gift-badge svg { width: 18px; height: 18px; flex-shrink: 0; }
+    .hero h1 {
+      font-size: clamp(26px, 5vw, 38px);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 1;
+    }
+    .hero h1 span { color: var(--lime); }
+    .hero p {
+      font-size: 16px;
+      color: rgba(255,255,255,0.82);
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Value Props ─────────────────────────────────── */
+    .props {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 28px 24px 0;
+      max-width: 700px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    .prop-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      flex: 1;
+      min-width: 180px;
+      max-width: 220px;
+      text-align: center;
+      box-shadow: 0 2px 12px rgba(0,86,214,0.08);
+    }
+    .prop-icon {
+      width: 44px; height: 44px;
+      background: rgba(0,86,214,0.08);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+    }
+    .prop-icon svg { width: 24px; height: 24px; color: var(--blue); }
+    .prop-card h3 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--deep);
+      margin-bottom: 4px;
+    }
+    .prop-card p {
+      font-size: 12px;
+      color: #6B7280;
+      line-height: 1.5;
+    }
+
+    /* ── Form Card ───────────────────────────────────── */
+    .form-card {
+      background: var(--white);
+      border-radius: 24px;
+      padding: 36px 28px;
+      margin: 28px auto 0;
+      max-width: 600px;
+      width: calc(100% - 32px);
+      box-shadow: 0 4px 30px rgba(0,86,214,0.1);
+    }
+    .form-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--deep);
+      margin-bottom: 6px;
+    }
+    .form-subtitle {
+      font-size: 14px;
+      color: #6B7280;
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+    .form-subtitle span {
+      color: var(--blue);
+      font-weight: 700;
+    }
+
+    /* ── Form Fields ─────────────────────────────────── */
+    .field-group { display: flex; flex-direction: column; gap: 18px; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 500px) { .field-row { grid-template-columns: 1fr; } }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--deep);
+      letter-spacing: 0.2px;
+    }
+    label .req { color: var(--blue); margin-left: 2px; }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    select {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1.5px solid #E2E8F0;
+      border-radius: var(--radius-sm);
+      font-family: var(--font);
+      font-size: 15px;
+      color: var(--black);
+      background: #FAFBFF;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+      outline: none;
+    }
+    input:focus, select:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(0,86,214,0.12);
+      background: var(--white);
+    }
+    input::placeholder { color: #B0BAC9; }
+
+    .select-wrapper {
+      position: relative;
+    }
+    .select-wrapper::after {
+      content: '';
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0; height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid #6B7280;
+      pointer-events: none;
+    }
+    select { cursor: pointer; color: var(--black); padding-right: 36px; }
+    select option[value=""] { color: #B0BAC9; }
+
+    /* Radio práctica */
+    .radio-group {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 400px) {
+      .radio-group { grid-template-columns: 1fr; }
+    }
+    .radio-option { display: none; }
+    .radio-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 10px;
+      border: 1.5px solid #E2E8F0;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: #6B7280;
+      transition: all 0.2s;
+      background: #FAFBFF;
+    }
+    .radio-label svg { width: 26px; height: 26px; color: #9CA3AF; transition: color 0.2s; }
+    .radio-option:checked + .radio-label {
+      border-color: var(--blue);
+      background: rgba(0,86,214,0.06);
+      color: var(--blue);
+    }
+    .radio-option:checked + .radio-label svg { color: var(--blue); }
+
+    /* ── Divider ─────────────────────────────────────── */
+    .divider {
+      border: none;
+      border-top: 1.5px solid var(--soft-grey);
+      margin: 8px 0;
+    }
+
+    /* ── Submit ──────────────────────────────────────── */
+    .submit-btn {
+      width: 100%;
+      padding: 17px;
+      background: var(--blue);
+      color: var(--white);
+      font-family: var(--font);
+      font-size: 16px;
+      font-weight: 800;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 4px;
+      letter-spacing: 0.2px;
+    }
+    .submit-btn:hover { background: #0047B3; box-shadow: 0 6px 20px rgba(0,86,214,0.3); }
+    .submit-btn:active { transform: scale(0.98); }
+    .submit-btn svg { width: 20px; height: 20px; }
+
+    .privacy-note {
+      font-size: 11px;
+      color: #9CA3AF;
+      text-align: center;
+      margin-top: 14px;
+      line-height: 1.6;
+    }
+
+    /* ── Success State ───────────────────────────────── */
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 20px 0;
+    }
+    .success-icon {
+      width: 80px; height: 80px;
+      background: var(--lime);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+    .success-icon svg { width: 40px; height: 40px; color: var(--deep); }
+    .success-screen h2 {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--deep);
+      margin-bottom: 10px;
+    }
+    .success-screen p {
+      font-size: 15px;
+      color: #6B7280;
+      line-height: 1.6;
+      max-width: 340px;
+      margin: 0 auto;
+    }
+    .success-screen p strong { color: var(--blue); }
+
+    /* ── Loading ─────────────────────────────────────── */
+    .spinner {
+      display: none;
+      width: 20px; height: 20px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-top-color: var(--white);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Footer ──────────────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 32px 24px 0;
+      font-size: 12px;
+      color: #9CA3AF;
+    }
+    footer strong { color: var(--blue); }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <!-- heva icon SVG (magnet symbol) -->
+    <div class="logo-icon">
+      <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="40" height="40" rx="10" fill="#0047B3"/>
+        <path d="M20 9C14.477 9 10 13.477 10 19v5h5v-5a5 5 0 0 1 10 0v5h5v-5c0-5.523-4.477-10-10-10Z" fill="white" opacity="0.9"/>
+        <circle cx="13" cy="27" r="3" fill="#C3FB11"/>
+        <circle cx="27" cy="27" r="3" fill="#C3FB11"/>
+      </svg>
+    </div>
+    <span class="logo-text">heva</span>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="gift-badge">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/>
+      <line x1="12" y1="22" x2="12" y2="7"/>
+      <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
+      <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+    </svg>
+    🎁 Gana una Apple Gift Card de $50 USD al registrarte
+  </div>
+  <h1>Financiamiento inmediato<br/>para tu <span>práctica médica</span></h1>
+  <p>Ofrece Klarna &amp; Afterpay a tus pacientes desde el primer día. Potencia tu consultorio con IA.</p>
+</div>
+
+<!-- VALUE PROPS -->
+<div class="props">
+  <div class="prop-card">
+    <div class="prop-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+        <line x1="1" y1="10" x2="23" y2="10"/>
+      </svg>
+    </div>
+    <h3>Klarna &amp; Afterpay</h3>
+    <p>Financiamiento en segundos para tus pacientes, sin fricción</p>
+  </div>
+  <div class="prop-card">
+    <div class="prop-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M12 6v6l4 2"/>
+      </svg>
+    </div>
+    <h3>Aprobación inmediata</h3>
+    <p>Sin papeleo. Tus pacientes aprueban en tiempo real</p>
+  </div>
+  <div class="prop-card">
+    <div class="prop-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+        <path d="M2 17l10 5 10-5"/>
+        <path d="M2 12l10 5 10-5"/>
+      </svg>
+    </div>
+    <h3>IA para tu práctica</h3>
+    <p>Automatiza tareas, ahorra tiempo, crece más rápido</p>
+  </div>
+</div>
+
+<!-- FORM CARD -->
+<div class="form-card">
+  <div id="form-view">
+    <p class="form-title">Regístrate gratis</p>
+    <p class="form-subtitle">Completa el formulario y participa por tu <span>Apple Gift Card de $50</span> 🍎</p>
+
+    <form id="registro-form" novalidate>
+      <div class="field-group">
+
+        <!-- Nombre -->
+        <div class="field">
+          <label for="nombre">Nombre completo <span class="req">*</span></label>
+          <input type="text" id="nombre" name="nombre" placeholder="Dr. Juan García López" required />
+        </div>
+
+        <!-- Especialidad + Ciudad -->
+        <div class="field-row">
+          <div class="field">
+            <label for="especialidad">Especialidad <span class="req">*</span></label>
+            <div class="select-wrapper">
+              <select id="especialidad" name="especialidad" required>
+                <option value="">Seleccionar…</option>
+                <option>Medicina General</option>
+                <option>Cardiología</option>
+                <option>Dermatología</option>
+                <option>Ginecología</option>
+                <option>Pediatría</option>
+                <option>Ortopedia</option>
+                <option>Odontología</option>
+                <option>Oftalmología</option>
+                <option>Psiquiatría / Psicología</option>
+                <option>Cirugía General</option>
+                <option>Neurología</option>
+                <option>Otra</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="ciudad">Ciudad / Estado <span class="req">*</span></label>
+            <input type="text" id="ciudad" name="ciudad" placeholder="Monterrey, NL" required />
+          </div>
+        </div>
+
+        <!-- Tipo de práctica -->
+        <div class="field">
+          <label>Tipo de práctica <span class="req">*</span></label>
+          <div class="radio-group">
+
+            <input type="radio" id="p-consultorio" name="practica" value="Consultorio propio" class="radio-option" required />
+            <label for="p-consultorio" class="radio-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+              </svg>
+              Consultorio propio
+            </label>
+
+            <input type="radio" id="p-clinica" name="practica" value="Clínica particular" class="radio-option" />
+            <label for="p-clinica" class="radio-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="7" width="20" height="14" rx="2"/>
+                <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+                <line x1="12" y1="12" x2="12" y2="16"/>
+                <line x1="10" y1="14" x2="14" y2="14"/>
+              </svg>
+              Clínica particular
+            </label>
+
+            <input type="radio" id="p-hospital" name="practica" value="Hospital" class="radio-option" />
+            <label for="p-hospital" class="radio-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+              </svg>
+              Hospital
+            </label>
+
+          </div>
+        </div>
+
+        <hr class="divider" />
+
+        <!-- Teléfono + Email -->
+        <div class="field-row">
+          <div class="field">
+            <label for="telefono">WhatsApp <span class="req">*</span></label>
+            <input type="tel" id="telefono" name="telefono" placeholder="+52 81 1234 5678" required />
+          </div>
+          <div class="field">
+            <label for="email">Email <span class="req">*</span></label>
+            <input type="email" id="email" name="email" placeholder="dr@correo.com" required />
+          </div>
+        </div>
+
+      </div><!-- /.field-group -->
+
+      <br/>
+
+      <button type="submit" class="submit-btn" id="submit-btn">
+        <span id="btn-text">Registrarme y participar</span>
+        <div class="spinner" id="spinner"></div>
+        <svg id="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </button>
+
+      <p class="privacy-note">
+        🔒 Tus datos están protegidos. Al registrarte aceptas recibir comunicaciones de heva.<br/>
+        El ganador de la Gift Card es seleccionado al azar entre los registros válidos.
+      </p>
+    </form>
+  </div><!-- /#form-view -->
+
+  <!-- SUCCESS -->
+  <div class="success-screen" id="success-view">
+    <div class="success-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+    <h2>¡Estás registrado! 🎉</h2>
+    <p>Tu participación para la <strong>Apple Gift Card de $50</strong> está confirmada. Te contactaremos por WhatsApp con los próximos pasos de heva.</p>
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 <strong>heva</strong> · Todos los derechos reservados</p>
+</footer>
+
+<script>
+  // ── CONFIG ── Reemplaza con tu URL de Google Apps Script
+  const SCRIPT_URL = 'TU_GOOGLEconst SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyPvBKlAre_29MztDdzDyMFEvACWQWCJ1NveCKn9mMJGoVbgMn7lwzymD3NayGm37US/exec';_APPS_SCRIPT_URL_AQUI';
+
+  const form = document.getElementById('registro-form');
+  const btnText = document.getElementById('btn-text');
+  const spinner = document.getElementById('spinner');
+  const btnIcon = document.getElementById('btn-icon');
+  const submitBtn = document.getElementById('submit-btn');
+  const formView = document.getElementById('form-view');
+  const successView = document.getElementById('success-view');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // Validate
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    const practica = document.querySelector('input[name="practica"]:checked');
+    if (!practica) {
+      alert('Por favor selecciona tu tipo de práctica.');
+      return;
+    }
+
+    // Loading state
+    btnText.textContent = 'Enviando…';
+    spinner.style.display = 'block';
+    btnIcon.style.display = 'none';
+    submitBtn.disabled = true;
+
+    const data = {
+      nombre:      document.getElementById('nombre').value.trim(),
+      especialidad: document.getElementById('especialidad').value,
+      ciudad:      document.getElementById('ciudad').value.trim(),
+      practica:    practica.value,
+      telefono:    document.getElementById('telefono').value.trim(),
+      email:       document.getElementById('email').value.trim(),
+      timestamp:   new Date().toLocaleString('es-MX', { timeZone: 'America/Monterrey' })
+    };
+
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+    } catch (err) {
+      console.warn('Network error – still showing success', err);
+    }
+
+    // Show success
+    formView.style.display = 'none';
+    successView.style.display = 'block';
+  });
+</script>
+</body>
+</html>
